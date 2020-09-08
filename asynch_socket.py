@@ -18,9 +18,11 @@ class EchoHandler(asyncore.dispatcher_with_send):
         if data:
             try:
                 decoded=decode_data(data)
-                if int(data[0])<100:
+                if int(decoded[0])<5:
                     insert_into_db(decoded)
                     self.send(data)
+                else:
+                    print(decoded)
             except:
                 print(data)
 
