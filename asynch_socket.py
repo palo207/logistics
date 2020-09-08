@@ -1,13 +1,28 @@
 import asyncore
 import socket
 
+def decode_data(data):
+    decoded=data.decode("utf-8")
+    decoded=decoded.replace("'","")
+    decoded=decoded.split(',')
+    decoded=[x.strip() for x in decoded]
+    return decoded
+
+def insert_into_db(data):
+    print('ok')
+
 class EchoHandler(asyncore.dispatcher_with_send):
 
     def handle_read(self):
         data = self.recv(8192)
         if data:
-            print( "\n {}".format(data))
-            self.send(data)
+            try:
+                decoded=decode_data(data)
+                if int(data[0])<100:
+                    insert_into_db(decoded)
+                    self.send(data)
+            except:
+                print(data)
 
 class EchoServer(asyncore.dispatcher):
 
