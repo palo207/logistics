@@ -2,6 +2,8 @@ import asyncore
 import socket
 import mysql_conn
 
+#address='192.168.67.30'
+address='192.168.100.254'
 
 def decode_data(data):
     decoded=data.decode("utf-8")
@@ -21,12 +23,12 @@ class EchoHandler(asyncore.dispatcher_with_send):
             try:
                 decoded=decode_data(data)
                 if int(decoded[0])<5:
-                    insert_into_db(decoded)
+                    mysql_conn.insert_sensordata_db(decoded)
                     self.send(data)
                 else:
                     print(decoded)
             except:
-                print(data)
+                print(decoded)
 
 class EchoServer(asyncore.dispatcher):
 
@@ -44,5 +46,9 @@ class EchoServer(asyncore.dispatcher):
             print ('Incoming connection from %s' % repr(addr))
             handler = EchoHandler(sock)
 
-server = EchoServer('192.168.67.30', 8090)
-asyncore.loop()
+def main_loop():
+    server = EchoServer(address, 8090)
+    asyncore.loop()
+
+if __name__ == "__main__":
+    main_loop()
