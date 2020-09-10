@@ -10,8 +10,8 @@ def insert_sensordata_db(data):
                host=host,database=database)
     cursor = cnx.cursor()
     q_sensor_data=("INSERT INTO sensor_data "
-                    "(SensorID,WorkplaceID,Color,R,G,B) "
-                    "VALUES (%s,%s,%s,%s,%s,%s)"
+                    "(SensorID,WorkplaceID,Color) "
+                    "VALUES (%s,%s,%s)"
                     )
     sensor_data=data
     cursor.execute(q_sensor_data,sensor_data)
