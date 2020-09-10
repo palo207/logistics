@@ -21,7 +21,7 @@ class EchoHandler(asyncore.dispatcher_with_send):
         if data:
             try:
                 decoded=decode_data(data)
-                if decoded[0] in workplaces:
+                if decoded[0] in workplaces and len(decoded)==1:
                     data=mysql_conn.read_bom_from_db(decoded[0])
                     for i in range(len(data)):
                         row= ";"+",".join(str(x) for x in data[i])+",+"
