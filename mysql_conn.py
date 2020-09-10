@@ -33,7 +33,6 @@ def read_bom_from_db(p_no):
     cursor.execute(q_products)
     cursor_data=list(cursor.fetchall())
     cursor_data=[list(x) for x in cursor_data]
-    print(cursor_data)
     cursor.close()
     cnx.close()
     return cursor_data
@@ -44,7 +43,7 @@ def read_buffer_status(p_no):
     cnx=mysqlc.connect(user=user,password=password,
                host=host,database=database)
     cursor = cnx.cursor(buffered=True)
-    q_buffer_status=("SELECT Buffer_status from bom_edit Where ID=%s OR ID=%s OR ID=%s")
+    q_buffer_status=("SELECT Buffer_status from bom1 Where ID=%s OR ID=%s OR ID=%s")
     cursor.execute(q_buffer_status,read)
     buffer_status=list(cursor.fetchall())
     buffer_status=[list(x) for x in buffer_status]
@@ -53,6 +52,6 @@ def read_buffer_status(p_no):
     return buffer_status
 
 if __name__ == "__main__":
-    insert_sensordata_db(["1",'WP100','cierna','1000','1000','1000'])
+    insert_sensordata_db(["1",'WP100','cierna'])
     read_bom_from_db("WP2")
     read_buffer_status("WP2")

@@ -3,6 +3,7 @@ import socket
 import mysql_conn
 
 address='192.168.67.30'
+workplaces=["WP1","WP2","WP3"]
 #address='192.168.100.254'
 
 def decode_data(data):
@@ -20,7 +21,13 @@ class EchoHandler(asyncore.dispatcher_with_send):
         if data:
             try:
                 decoded=decode_data(data)
-                print(decoded)
+                if decoded[0] in workplaces:
+                    data=mysql_conn.read_bom_from_db(decoded[0])
+                    for i in range(len(data)):
+                        row= ";"+",".join(str(x) for x in data[i])+",+"
+                        print(row)
+                        self.send(row.encode())
+
                 if int(decoded[0])<5:
                     mysql_conn.insert_sensordata_db(decoded)
                     #self.send(data)
