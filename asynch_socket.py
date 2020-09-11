@@ -13,6 +13,9 @@ def decode_data(data):
     decoded=[x.strip() for x in decoded]
     return decoded
 
+def get_row(data)
+    row= ";"+",".join(str(x) for x in data)+",+"
+    return row
 
 class EchoHandler(asyncore.dispatcher_with_send):
 
@@ -24,9 +27,17 @@ class EchoHandler(asyncore.dispatcher_with_send):
                 if decoded[0] in workplaces and len(decoded)==1:
                     data=mysql_conn.read_bom_from_db(decoded[0])
                     for i in range(len(data)):
-                        row= ";"+",".join(str(x) for x in data[i])+",+"
-                        print(row)
+                        row=get_row(data[i])
                         self.send(row.encode())
+
+                if decoded[0]="buf":
+                    data=read_buffer_status(decoded[1])
+                    for i in range(len(data)):
+                        row=get_row(data[i])
+                        self.send(row.encode())
+
+                if decoded[0]="upd":
+                    update_buffer_status(decoded)
 
                 if int(decoded[0])<5:
                     mysql_conn.insert_sensordata_db(decoded)

@@ -51,7 +51,25 @@ def read_buffer_status(p_no):
     cnx.close()
     return buffer_status
 
+def update_buffer_status(data):
+    read=["_Mat1","_Mat2","_Mat3"]
+    read= [data[1]+x for x in read]
+    for i in range(0,3):
+        cnx=mysqlc.connect(user=user,password=password,
+               host=host,database=database)
+        cursor = cnx.cursor(buffered=True)
+        q_update_buffer=("UPDATE bom1 SET Buffer_status =%s WHERE ID=%s")
+        i_data=(int(data[2+i]),read[i])
+        cursor.execute(q_update_buffer,i_data)
+        cnx.commit()
+        cursor.close()
+        cnx.close
+    print("updated")
+
+
+
 if __name__ == "__main__":
     insert_sensordata_db(["1",'WP100','cierna'])
     read_bom_from_db("WP2")
     read_buffer_status("WP2")
+    update_buffer_status(["buf","WP1","1000","1000","1000"])
