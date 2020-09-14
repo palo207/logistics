@@ -13,8 +13,9 @@ def decode_data(data):
     decoded=[x.strip() for x in decoded]
     return decoded
 
-def get_row(data)
-    row= ";"+",".join(str(x) for x in data)+",+"
+def get_row(data):
+    row= ";"+" , ".join(str(x) for x in data)+",+"
+    print(row)
     return row
 
 class EchoHandler(asyncore.dispatcher_with_send):
@@ -30,16 +31,18 @@ class EchoHandler(asyncore.dispatcher_with_send):
                         row=get_row(data[i])
                         self.send(row.encode())
 
-                if decoded[0]="buf":
-                    data=read_buffer_status(decoded[1])
-                    for i in range(len(data)):
-                        row=get_row(data[i])
-                        self.send(row.encode())
+                if decoded[0]=="buf":
+                    print("Fetching buffer status for {}".format(decoded[1]))
+                    data=mysql_conn.read_buffer_status(decoded[1])
+                    data=[data[0][0],data[1][0],data[2][0]]
+                    row=get_row(data)
+                    self.send(row.encode())
 
-                if decoded[0]="upd":
-                    update_buffer_status(decoded)
+                if decoded[0]=="upd":
+                    print("Update coming up")
+                    mysql_conn.update_buffer_status(decoded)
 
-                if int(decoded[0])<5:
+                if int(decoded[0])<8:
                     mysql_conn.insert_sensordata_db(decoded)
                     #self.send(data)
                 else:
