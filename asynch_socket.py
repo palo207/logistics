@@ -4,7 +4,7 @@ import mysql_conn
 
 address='192.168.67.30'
 workplaces=["WP1","WP2","WP3"]
-#address='192.168.100.254'
+##address='192.168.100.254'
 
 def decode_data(data):
     decoded=data.decode("utf-8")
